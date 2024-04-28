@@ -86,7 +86,8 @@ export default function ProjectCategoryModal(props) {
                                     Name: values.Name !== undefined ? values.Name : values.row.Name,
                                     Description: values.Description !== undefined ? values.Description : values.row.Description
                                 }
-                                submitProjectCategory(body, values.row.id)
+                                const id = props.action === 'edit' ? values.row.id : null;
+                                submitProjectCategory(body, id)
                                 actions.setSubmitting(false)
                             }, 1000)
                         }}

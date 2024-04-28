@@ -87,7 +87,8 @@ export default function ProjectModal(props) {
                                     ClientId: values.ClientId !== undefined ? values.ClientId : values.row.ClientId,
                                     ProjectCategoryId: values.ProjectCategoryId !== undefined ? values.ProjectCategoryId : values.row.ProjectCategoryId
                                 }
-                                createProject(body, values.row.id)
+                                const id = props.action === 'edit' ? values.row.id : null;
+                                createProject(body, id)
                                 actions.setSubmitting(false)
                             }, 1000)
                         }}
