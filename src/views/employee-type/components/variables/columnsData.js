@@ -5,11 +5,11 @@ export const employeeTypeColumnsData = [
   },
   {
     Header: "NAME",
-    accessor: "name",
+    accessor: "Name",
   },
   {
     Header: "CREATED DATE",
-    accessor: "createdDate",
+    accessor: "CreatedOn",
   },
   {
     Header: "Action",

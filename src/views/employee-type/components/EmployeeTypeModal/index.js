@@ -12,7 +12,7 @@ import './styles.css';
 
 export default function EmployeeTypeModal(props) {
 
-    const createIndustry = (payload) => {
+    const createIndustry = (payload, employeeTypeId) => {
         console.log('payload');
         console.log(payload);
         if (props.action === 'create') {
@@ -27,6 +27,7 @@ export default function EmployeeTypeModal(props) {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
+                    props.onClose();
                     return response.json();
                 })
                 .then((data) => {
@@ -36,10 +37,10 @@ export default function EmployeeTypeModal(props) {
                     console.log(err.message);
                 });
         } else {
-            const url = `https://kms-backend.azurewebsites.net/api/employee-type?id=${payload.id}`;
+            const url = `https://kms-backend.azurewebsites.net/api/employee-type/${employeeTypeId}`;
 
             fetch(url, {
-                method: 'PUT',
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -49,6 +50,7 @@ export default function EmployeeTypeModal(props) {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
+                    props.onClose();
                     return response.json();
                 })
                 .then((data) => {
@@ -72,18 +74,22 @@ export default function EmployeeTypeModal(props) {
                 <ModalCloseButton />
                 <ModalBody>
                     <Formik
-                        initialValues={{ name: props.row? props.row.name : '', status: props.row? props.row.status : '' }}
+                         initialValues={props}
                         onSubmit={(values, actions) => {
                             setTimeout(() => {
-                                createIndustry(values)
+                                const body = {
+                                    Name: values.Name !== undefined ? values.Name : values.row.Name
+                                }
+                                createIndustry(body, values.row.id);
                                 actions.setSubmitting(false)
                             }, 1000)
                         }}
                     >
                         {(props) => (
                             <Form style={{ paddingRight: 10, paddingLeft: 10 }}>
-                                <Field name='name'>
+                                <Field name='Name'>
                                     {({ field, form }) => (
+                                        field.value = field.value === undefined ? (props.values.row ? props.values.row.Name : '') : field.value,
                                         <FormControl isInvalid={form.errors.name && form.touched.name}>
                                             <FormLabel>Name</FormLabel>
                                             <Input {...field} placeholder='Name' />
