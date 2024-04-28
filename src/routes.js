@@ -6,7 +6,7 @@ import {
 } from "react-icons/md";
 
 // Admin Imports
-import DataTables from "views/admin/dataTables";
+// import DataTables from "views/admin/dataTables";
 import Industry from "./views/industry";
 import Client from "./views/client";
 import ProjectCategory from "./views/project-category";
@@ -14,13 +14,13 @@ import Project from "./views/project";
 
 
 const routes = [
-  {
-    name: "Employees",
-    layout: "/admin",
-    icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
-    path: "/data-tables",
-    component: DataTables,
-  },
+  // {
+  //   name: "Employees",
+  //   layout: "/admin",
+  //   icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
+  //   path: "/data-tables",
+  //   component: DataTables,
+  // },
   {
     name: "Industry",
     layout: "/admin",
