@@ -1,11 +1,7 @@
-export const clientColumnsData = [
+export const projectColumnsData = [
   {
     Header: "ID",
     accessor: "id",
-  },
-  {
-    Header: "LOGO",
-    accessor: "logo",
   },
   {
     Header: "NAME",
@@ -14,6 +10,14 @@ export const clientColumnsData = [
   {
     Header: "DESCRIPTION",
     accessor: "Description",
+  },
+  {
+    Header: "CLIENT",
+    accessor: "ClientId",
+  },
+  {
+    Header: "PROJECT CATEGORY",
+    accessor: "ProjectCategoryId",
   },
   {
     Header: "STATUS",
@@ -26,10 +30,6 @@ export const clientColumnsData = [
   {
     Header: "LAST MODIFIED DATE",
     accessor: "ModifiedOn",
-  },
-  {
-    Header: "INDUSTRY",
-    accessor: "IndustryId",
   },
   {
     Header: "Action",

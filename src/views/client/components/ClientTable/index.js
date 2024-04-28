@@ -9,7 +9,7 @@ import {
     Tr,
     useColorModeValue, useDisclosure,
 } from "@chakra-ui/react";
-import React, {useMemo, useState} from "react";
+import React, { useMemo, useState } from "react";
 import {
     useGlobalFilter,
     usePagination,
@@ -17,10 +17,10 @@ import {
     useTable,
 } from "react-table";
 import Card from "components/card/Card";
-import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import ClientModal from "../ClientModal";
 export default function ColumnsTable(props) {
-    const { columnsData, tableData } = props;
+    const { columnsData, tableData, setCurrent, setCurrentAction } = props;
 
     const columns = useMemo(() => columnsData, [columnsData]);
     const data = useMemo(() => tableData, [tableData]);
@@ -45,12 +45,37 @@ export default function ColumnsTable(props) {
         prepareRow,
         initialState,
     } = tableInstance;
-    initialState.pageSize = 5;
+    initialState.pageSize = 25;
 
 
     const handleRowClick = (row) => {
         setSelectedRow(row.original);
+        setCurrent(row.original);
+        setCurrentAction('edit');
     };
+
+    const onDelete = (row) => {
+        const url = `https://kms-backend.azurewebsites.net/api/client/${row.id}`;
+
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
 
     const textColor = useColorModeValue("secondaryGray.900", "white");
     const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
@@ -118,12 +143,13 @@ export default function ColumnsTable(props) {
                                                 />
                                                 <IconButton
                                                     aria-label="Delete"
+                                                    type="submit"
                                                     icon={<DeleteIcon />}
-                                                    onClick={() => console.log("Delete clicked for row", index)}
+                                                    onClick={() => { onDelete(row.original) }}
                                                 />
                                             </>
                                         );
-                                    } else{
+                                    } else {
                                         data = (
                                             <Text color={textColor} fontSize='sm' fontWeight='700'>
                                                 {cell.value}

@@ -5,18 +5,18 @@ import {
     ModalCloseButton,
     ModalContent, ModalFooter,
     ModalHeader,
-    ModalOverlay,
+    ModalOverlay, Textarea,
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
 import './styles.css';
 
-export default function IndustryModal(props) {
+export default function ProjectCategoryModal(props) {
 
-    const createIndustry = (payload, industryId) => {
+    const submitProjectCategory = (payload, projectCatId) => {
         console.log('payload');
         console.log(payload);
         if (props.action === 'create') {
-            fetch('https://kms-backend.azurewebsites.net/api/industry', {
+            fetch('https://kms-backend.azurewebsites.net/api/project-category', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -37,7 +37,7 @@ export default function IndustryModal(props) {
                     console.log(err.message);
                 });
         } else {
-            const url = `https://kms-backend.azurewebsites.net/api/industry/${industryId}`;
+            const url = `https://kms-backend.azurewebsites.net/api/project-category/${projectCatId}`;
 
             fetch(url, {
                 method: 'PATCH',
@@ -60,6 +60,7 @@ export default function IndustryModal(props) {
                     console.log(err.message);
                 });
         }
+
     }
 
     console.log('--props----');
@@ -71,8 +72,8 @@ export default function IndustryModal(props) {
             <ModalContent>
                 {
                     props.action === 'edit' ?
-                        <ModalHeader>UPDATE INDUSTRY</ModalHeader> :
-                        <ModalHeader>CREATE NEW INDUSTRY</ModalHeader>
+                        <ModalHeader>UPDATE PROJECT CATEGORY</ModalHeader> :
+                        <ModalHeader>CREATE NEW PROJECT CATEGORY</ModalHeader>
                 }
                 <ModalCloseButton />
                 <ModalBody>
@@ -83,9 +84,9 @@ export default function IndustryModal(props) {
                             setTimeout(() => {
                                 const body = {
                                     Name: values.Name !== undefined ? values.Name : values.row.Name,
+                                    Description: values.Description !== undefined ? values.Description : values.row.Description
                                 }
-                                console.log(values);
-                                createIndustry(body, values.row.id)
+                                submitProjectCategory(body, values.row.id)
                                 actions.setSubmitting(false)
                             }, 1000)
                         }}
@@ -97,8 +98,18 @@ export default function IndustryModal(props) {
                                         // eslint-disable-next-line no-sequences
                                         field.value = field.value === undefined ? (props.values.row ? props.values.row.Name : '') : field.value,
                                         <FormControl isInvalid={form.errors.name && form.touched.name}>
-                                            <FormLabel>Industry Name</FormLabel>
-                                            <Input {...field} placeholder='Industry Name' />
+                                            <FormLabel>Project Category Name</FormLabel>
+                                            <Input {...field} placeholder='Project Category Name' />
+                                        </FormControl>
+                                    )}
+                                </Field>
+                                <Field name='Description'>
+                                    {({ field, form }) => (
+                                        // eslint-disable-next-line no-sequences
+                                        field.value = field.value === undefined ? (props.values.row ? props.values.row.Description : '') : field.value,
+                                        <FormControl isInvalid={form.errors.name && form.touched.name}>
+                                            <FormLabel>Description</FormLabel>
+                                            <Textarea {...field} />
                                         </FormControl>
                                     )}
                                 </Field>
@@ -118,7 +129,7 @@ export default function IndustryModal(props) {
                             </Form>
                         )}
                     </Formik>
-                        }
+}
                 </ModalBody>
                 <ModalFooter>
                 </ModalFooter>

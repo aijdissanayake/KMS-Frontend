@@ -1,0 +1,16 @@
+[
+  {
+   "id": 1,
+    "name": "Category 1",
+    "description": "This is project cat 1",
+    "status": "Active",
+    "createdDate": "12/03/2024"
+  },
+  {
+    "id": 2,
+    "name": "Category 2",
+    "description": "This is project cat 2",
+    "status": "Inactive",
+    "createdDate": "12/01/2024"
+  }
+]

@@ -5,16 +5,13 @@ import {
     ModalCloseButton,
     ModalContent, ModalFooter,
     ModalHeader,
-    ModalOverlay, Select,
+    ModalOverlay,
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
 import './styles.css';
 
 export default function ClientModal(props) {
-
-    const createClient = (payload) => {
-        console.log('payload');
-        console.log(payload);
+    const createClient = (payload, clientId) => {
         if (props.action === 'create') {
             fetch('https://kms-backend.azurewebsites.net/api/client', {
                 method: 'POST',
@@ -27,7 +24,7 @@ export default function ClientModal(props) {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
-                    return response.json();
+                    props.onClose();
                 })
                 .then((data) => {
                     console.log(data);
@@ -36,10 +33,10 @@ export default function ClientModal(props) {
                     console.log(err.message);
                 });
         } else {
-            const url = `https://kms-backend.azurewebsites.net/api/client?id=${payload.id}`;
+            const url = `https://kms-backend.azurewebsites.net/api/client/${clientId}`;
 
             fetch(url, {
-                method: 'PUT',
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -74,68 +71,69 @@ export default function ClientModal(props) {
                 }
                 <ModalCloseButton />
                 <ModalBody>
-                    <Formik
-                        initialValues={{ name: props.row? props.row.name : '', status: props.row? props.row.status : '' }}
-                        onSubmit={(values, actions) => {
-                            setTimeout(() => {
-                                createClient(values)
-                                actions.setSubmitting(false)
-                            }, 1000)
-                        }}
-                    >
-                        {(props) => (
-                            <Form style={{ paddingRight: 10, paddingLeft: 10 }}>
-                                <Field name='name'>
-                                    {({ field, form }) => (
-                                        <FormControl isInvalid={form.errors.name && form.touched.name}>
-                                            <FormLabel>Name</FormLabel>
-                                            <Input {...field} placeholder='Client Name' />
-                                        </FormControl>
-                                    )}
-                                </Field>
-                                <Field name='description'>
-                                    {({ field, form }) => (
-                                        <FormControl isInvalid={form.errors.description && form.touched.description}>
-                                            <FormLabel>Description</FormLabel>
-                                            <Input {...field} placeholder='Client Description' />
-                                        </FormControl>
-                                    )}
-                                </Field>
-                                <Field name='industry'>
-                                    {({ field, form }) => (
-                                        <FormControl isInvalid={form.errors.industry && form.touched.industry}>
-                                            <FormLabel>Industry</FormLabel>
-                                            <Input {...field} placeholder='Client Industry' />
-                                        </FormControl>
-                                    )}
-                                </Field>
-                                <Field name='status'>
-                                    {({ field, form }) => (
-                                        <FormControl isInvalid={form.errors.status && form.touched.status}>
-                                            <FormLabel>Status</FormLabel>
-                                            <Select placeholder='Select status'>
-                                                <option>Active</option>
-                                                <option>In active</option>
-                                            </Select>
-                                        </FormControl>
-                                    )}
-                                </Field>
-                                <Button
-                                    mt={4}
-                                    isLoading={props.isSubmitting}
-                                    type='submit'
-                                    style={{
-                                        marginTop: 30,
-                                        float: 'right',
-                                        background: '#272776',
-                                        color: 'white',
-                                    }}
-                                >
-                                    Submit
-                                </Button>
-                            </Form>
-                        )}
-                    </Formik>
+                    {
+                        <Formik
+                            initialValues={props}
+                            onSubmit={(values, actions) => {
+                                setTimeout(() => {
+                                    const body = {
+                                        Name: values.Name !== undefined ? values.Name : values.row.Name,
+                                        Description: values.Description !== undefined ? values.Description : values.row.Description,
+                                        IndustryId: values.IndustryId !== undefined ? values.IndustryId : values.row.IndustryId
+                                    }
+                                    createClient(body, values.row.id)
+                                    actions.setSubmitting(false)
+                                }, 1000)
+                            }}
+                        >
+                            {(props) => (
+                                <Form style={{ paddingRight: 10, paddingLeft: 10 }}>
+                                    <Field name='Name'>
+                                        {({ field, form }) => (
+                                            // eslint-disable-next-line no-sequences
+                                            field.value = field.value === undefined ? (props.values.row ? props.values.row.Name : '') : field.value,
+                                            <FormControl isInvalid={form.errors.name && form.touched.name}>
+                                                <FormLabel>Name</FormLabel>
+                                                <Input {...field} placeholder='Client Name' />
+                                            </FormControl>
+                                        )}
+                                    </Field>
+                                    <Field name='Description'>
+                                        {({ field, form }) => (
+                                            // eslint-disable-next-line no-sequences
+                                            field.value = field.value === undefined ? (props.values.row ? props.values.row.Description : '') : field.value,
+                                            <FormControl isInvalid={form.errors.description && form.touched.description}>
+                                                <FormLabel>Description</FormLabel>
+                                                <Input {...field} placeholder='Client Description' />
+                                            </FormControl>
+                                        )}
+                                    </Field>
+                                    <Field name='IndustryId'>
+                                        {({ field, form }) => (
+                                            // eslint-disable-next-line no-sequences
+                                            field.value = field.value === undefined ? (props.values.row ? props.values.row.IndustryId : '') : field.value,
+                                            <FormControl isInvalid={form.errors.industry && form.touched.industry}>
+                                                <FormLabel>Industry</FormLabel>
+                                                <Input {...field} placeholder='Client Industry' />
+                                            </FormControl>
+                                        )}
+                                    </Field>
+                                    <Button
+                                        mt={4}
+                                        isLoading={props.isSubmitting}
+                                        type='submit'
+                                        style={{
+                                            marginTop: 30,
+                                            float: 'right',
+                                            background: '#272776',
+                                            color: 'white',
+                                        }}
+                                    >
+                                        Submit
+                                    </Button>
+                                </Form>
+                            )}
+                        </Formik>}
                 </ModalBody>
                 <ModalFooter>
                 </ModalFooter>

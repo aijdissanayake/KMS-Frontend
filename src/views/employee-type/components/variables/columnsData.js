@@ -1,4 +1,4 @@
-export const industryColumnsData = [
+export const employeeTypeColumnsData = [
   {
     Header: "ID",
     accessor: "id",
@@ -6,10 +6,6 @@ export const industryColumnsData = [
   {
     Header: "NAME",
     accessor: "Name",
-  },
-  {
-    Header: "STATUS",
-    accessor: "IsActive",
   },
   {
     Header: "CREATED DATE",

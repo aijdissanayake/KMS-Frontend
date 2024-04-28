@@ -1,4 +1,4 @@
-export const industryColumnsData = [
+export const projectCategoryColumnsData = [
   {
     Header: "ID",
     accessor: "id",
@@ -6,6 +6,10 @@ export const industryColumnsData = [
   {
     Header: "NAME",
     accessor: "Name",
+  },
+  {
+    Header: "DESCRIPTION",
+    accessor: "Description",
   },
   {
     Header: "STATUS",

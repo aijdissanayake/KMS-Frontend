@@ -18,9 +18,9 @@ import {
 } from "react-table";
 import Card from "components/card/Card";
 import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
-import IndustryModal from "../IndustryModal";
+import EmployeeModal from "../EmployeeModal";
 export default function ColumnsTable(props) {
-    const { columnsData, tableData, setCurrent, setCurrentAction } = props;
+    const { columnsData, tableData } = props;
 
     const columns = useMemo(() => columnsData, [columnsData]);
     const data = useMemo(() => tableData, [tableData]);
@@ -49,34 +49,8 @@ export default function ColumnsTable(props) {
 
 
     const handleRowClick = (row) => {
-        console.log(row);
         setSelectedRow(row.original);
-        setCurrent(row.original);
-        setCurrentAction('edit');
     };
-
-    const onDelete = (row) => {
-        const url = `https://kms-backend.azurewebsites.net/api/industry/${row.id}`;
-
-        fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log(data);
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
-    }
 
     const textColor = useColorModeValue("secondaryGray.900", "white");
     const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
@@ -128,19 +102,37 @@ export default function ColumnsTable(props) {
                                                 </Text>
                                             </Flex>
                                         );
-                                    } else if (cell.column.Header === "NAME") {
+                                    } else if (cell.column.Header === "FIRST NAME") {
                                         data = (
                                             <Text color={textColor} fontSize='sm' fontWeight='700'>
                                                 {cell.value}
                                             </Text>
                                         );
-                                    } else if (cell.column.Header === "STATUS") {
+                                    } else if (cell.column.Header === "LAST NAME") {
                                         data = (
                                             <Text color={textColor} fontSize='sm' fontWeight='700'>
-                                                {cell.value === true ? "Active" : "Deactive"}
+                                                {cell.value}
                                             </Text>
                                         );
-                                    } else if (cell.column.Header === "CREATED DATE") {
+                                    } else if (cell.column.Header === "DATE OF BIRTH") {
+                                        data = (
+                                            <Text color={textColor} fontSize='sm' fontWeight='700'>
+                                                {new Date(cell.value).toDateString()}
+                                            </Text>
+                                        );
+                                    } else if (cell.column.Header === "GENDER") {
+                                        data = (
+                                            <Text color={textColor} fontSize='sm' fontWeight='700'>
+                                                {cell.value}
+                                            </Text>
+                                        );
+                                    } else if (cell.column.Header === "EMPLOYEE TYPE") {
+                                        data = (
+                                            <Text color={textColor} fontSize='sm' fontWeight='700'>
+                                                {cell.value}
+                                            </Text>
+                                        );
+                                    } else if (cell.column.Header === "PROJECT") {
                                         data = (
                                             <Text color={textColor} fontSize='sm' fontWeight='700'>
                                                 {cell.value}
@@ -157,7 +149,7 @@ export default function ColumnsTable(props) {
                                                 <IconButton
                                                     aria-label="Delete"
                                                     icon={<DeleteIcon />}
-                                                    onClick={() => { onDelete(row.original) }}
+                                                    onClick={() => console.log("Delete clicked for row", index)}
                                                 />
                                             </>
                                         );
@@ -179,7 +171,7 @@ export default function ColumnsTable(props) {
                 </Tbody>
             </Table>
             {isOpen && selectedRow && (
-                <IndustryModal action={'edit'} isOpen={isOpen} onClose={onClose} row={selectedRow} />
+                <EmployeeModal action={'edit'} isOpen={isOpen} onClose={onClose} row={selectedRow} />
             )}
         </Card>
     );

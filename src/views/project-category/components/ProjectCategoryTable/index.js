@@ -18,9 +18,9 @@ import {
 } from "react-table";
 import Card from "components/card/Card";
 import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
-import IndustryModal from "../IndustryModal";
-export default function ColumnsTable(props) {
-    const { columnsData, tableData, setCurrent, setCurrentAction } = props;
+import IndustryModal from "../ProjectCategoryModal";
+export default function ProjectCategoryTable(props) {
+    const { columnsData, tableData } = props;
 
     const columns = useMemo(() => columnsData, [columnsData]);
     const data = useMemo(() => tableData, [tableData]);
@@ -49,14 +49,11 @@ export default function ColumnsTable(props) {
 
 
     const handleRowClick = (row) => {
-        console.log(row);
         setSelectedRow(row.original);
-        setCurrent(row.original);
-        setCurrentAction('edit');
     };
 
     const onDelete = (row) => {
-        const url = `https://kms-backend.azurewebsites.net/api/industry/${row.id}`;
+        const url = `https://kms-backend.azurewebsites.net/api/project-category/${row.id}`;
 
         fetch(url, {
             method: 'DELETE',
@@ -134,10 +131,16 @@ export default function ColumnsTable(props) {
                                                 {cell.value}
                                             </Text>
                                         );
+                                    } else if (cell.column.Header === "DESCRIPTION") {
+                                        data = (
+                                            <Text color={textColor} fontSize='sm' fontWeight='700'>
+                                                {cell.value}
+                                            </Text>
+                                        );
                                     } else if (cell.column.Header === "STATUS") {
                                         data = (
                                             <Text color={textColor} fontSize='sm' fontWeight='700'>
-                                                {cell.value === true ? "Active" : "Deactive"}
+                                                {cell.value === true ? "Active":"In-Active"}
                                             </Text>
                                         );
                                     } else if (cell.column.Header === "CREATED DATE") {

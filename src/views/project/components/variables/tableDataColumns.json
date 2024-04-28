@@ -1,0 +1,24 @@
+[
+  {
+   "id": 1,
+    "name": "Project 01",
+    "description": "Project 01 - Dec",
+    "status": "Active",
+    "createdDate": "12/03/2024",
+    "lastModifiedDate": "12/03/2024",
+    "industry":"Industry 01",
+    "client":"Client-01",
+    "projectCategory":" Proj Cat 01"
+  },
+  {
+    "id": 2,
+     "name": "Project 02",
+     "description": "Project 02 - Dec",
+     "status": "Active",
+     "createdDate": "12/03/2024",
+     "lastModifiedDate": "12/03/2024",
+     "industry":"Industry 01",
+     "client":"Client-02",
+     "projectCategory":" Proj Cat 02"
+   }
+]

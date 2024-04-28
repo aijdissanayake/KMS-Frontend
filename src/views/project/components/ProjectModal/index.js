@@ -10,13 +10,13 @@ import {
 import { Field, Form, Formik } from 'formik';
 import './styles.css';
 
-export default function IndustryModal(props) {
+export default function ProjectModal(props) {
 
-    const createIndustry = (payload, industryId) => {
+    const createProject = (payload, projectId) => {
         console.log('payload');
         console.log(payload);
         if (props.action === 'create') {
-            fetch('https://kms-backend.azurewebsites.net/api/industry', {
+            fetch('https://kms-backend.azurewebsites.net/api/project', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -37,7 +37,7 @@ export default function IndustryModal(props) {
                     console.log(err.message);
                 });
         } else {
-            const url = `https://kms-backend.azurewebsites.net/api/industry/${industryId}`;
+            const url = `https://kms-backend.azurewebsites.net/api/project/${projectId}`;
 
             fetch(url, {
                 method: 'PATCH',
@@ -71,8 +71,8 @@ export default function IndustryModal(props) {
             <ModalContent>
                 {
                     props.action === 'edit' ?
-                        <ModalHeader>UPDATE INDUSTRY</ModalHeader> :
-                        <ModalHeader>CREATE NEW INDUSTRY</ModalHeader>
+                        <ModalHeader>UPDATE PROJECT</ModalHeader> :
+                        <ModalHeader>CREATE NEW PROJECT</ModalHeader>
                 }
                 <ModalCloseButton />
                 <ModalBody>
@@ -83,9 +83,11 @@ export default function IndustryModal(props) {
                             setTimeout(() => {
                                 const body = {
                                     Name: values.Name !== undefined ? values.Name : values.row.Name,
+                                    Description: values.Description !== undefined ? values.Description : values.row.Description,
+                                    ClientId: values.ClientId !== undefined ? values.ClientId : values.row.ClientId,
+                                    ProjectCategoryId: values.ProjectCategoryId !== undefined ? values.ProjectCategoryId : values.row.ProjectCategoryId
                                 }
-                                console.log(values);
-                                createIndustry(body, values.row.id)
+                                createProject(body, values.row.id)
                                 actions.setSubmitting(false)
                             }, 1000)
                         }}
@@ -97,8 +99,39 @@ export default function IndustryModal(props) {
                                         // eslint-disable-next-line no-sequences
                                         field.value = field.value === undefined ? (props.values.row ? props.values.row.Name : '') : field.value,
                                         <FormControl isInvalid={form.errors.name && form.touched.name}>
-                                            <FormLabel>Industry Name</FormLabel>
-                                            <Input {...field} placeholder='Industry Name' />
+                                            <FormLabel>Name</FormLabel>
+                                            <Input {...field} placeholder='Project Name' />
+                                        </FormControl>
+                                    )}
+                                </Field>
+                                <Field name='Description'>
+                                    {({ field, form }) => (
+                                        // eslint-disable-next-line no-sequences
+                                        field.value = field.value === undefined ? (props.values.row ? props.values.row.Description : '') : field.value,
+                                        <FormControl isInvalid={form.errors.description && form.touched.description}>
+                                            <FormLabel>Description</FormLabel>
+                                            <Input {...field} placeholder='Project Description' />
+                                        </FormControl>
+                                    )}
+                                </Field>
+                            
+                                <Field name='ClientId'>
+                                    {({ field, form }) => (
+                                        // eslint-disable-next-line no-sequences
+                                        field.value = field.value === undefined ? (props.values.row ? props.values.row.ClientId : '') : field.value,
+                                        <FormControl isInvalid={form.errors.industry && form.touched.industry}>
+                                            <FormLabel>Client</FormLabel>
+                                            <Input {...field} placeholder='Project Industry' />
+                                        </FormControl>
+                                    )}
+                                </Field>
+                                <Field name='ProjectCategoryId'>
+                                    {({ field, form }) => (
+                                        // eslint-disable-next-line no-sequences
+                                        field.value = field.value === undefined ? (props.values.row ? props.values.row.ProjectCategoryId : '') : field.value,
+                                        <FormControl isInvalid={form.errors.industry && form.touched.industry}>
+                                            <FormLabel>Project Category</FormLabel>
+                                            <Input {...field} placeholder='Project Industry' />
                                         </FormControl>
                                     )}
                                 </Field>
@@ -118,7 +151,7 @@ export default function IndustryModal(props) {
                             </Form>
                         )}
                     </Formik>
-                        }
+}
                 </ModalBody>
                 <ModalFooter>
                 </ModalFooter>

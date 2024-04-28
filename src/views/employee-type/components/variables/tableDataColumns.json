@@ -1,0 +1,14 @@
+[
+  {
+   "id": 1,
+    "name": "Employee Type 1",
+    "status": "Active",
+    "createdDate": "12/03/2024"
+  },
+  {
+    "id": 2,
+    "name": "Employee Type 2",
+    "status": "Inactive",
+    "createdDate": "12/03/2024"
+  }
+]

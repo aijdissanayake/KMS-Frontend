@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "createdOn": "2024-02-08T07:31:16.000Z",
+    "modifiedOn": "2024-02-08T07:31:16.000Z",
+    "isActive": true,
+    "firstName": "Jane",
+    "lastName": "Clark",
+    "dateOfBirth": "1992-05-29T18:00:00.000Z",
+    "gender": "Female",
+    "joinedDate": "2023-11-14T18:30:00.000Z",
+    "leftDate": null,
+    "beenzBalance": null,
+    "employeeType": "Employee Type 2",
+    "project": "Project 1"
+  },
+  {
+    "id": 2,
+    "createdOn": "2024-02-08T07:31:16.000Z",
+    "modifiedOn": "2024-02-08T07:31:16.000Z",
+    "isActive": true,
+    "firstName": "Steve",
+    "lastName": "Smith",
+    "dateOfBirth": "1997-05-29T18:00:00.000Z",
+    "gender": "Male",
+    "joinedDate": "2023-11-14T18:30:00.000Z",
+    "leftDate": null,
+    "beenzBalance": null,
+    "employeeType": "Employee Type 1",
+    "project": "Project 2"
+  }
+]

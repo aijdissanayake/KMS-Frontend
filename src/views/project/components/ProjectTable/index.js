@@ -18,7 +18,7 @@ import {
 } from "react-table";
 import Card from "components/card/Card";
 import {DeleteIcon, EditIcon} from "@chakra-ui/icons";
-import IndustryModal from "../IndustryModal";
+import ProjectModal from "../ProjectModal";
 export default function ColumnsTable(props) {
     const { columnsData, tableData, setCurrent, setCurrentAction } = props;
 
@@ -49,14 +49,13 @@ export default function ColumnsTable(props) {
 
 
     const handleRowClick = (row) => {
-        console.log(row);
         setSelectedRow(row.original);
         setCurrent(row.original);
         setCurrentAction('edit');
     };
 
     const onDelete = (row) => {
-        const url = `https://kms-backend.azurewebsites.net/api/industry/${row.id}`;
+        const url = `https://kms-backend.azurewebsites.net/api/project/${row.id}`;
 
         fetch(url, {
             method: 'DELETE',
@@ -128,22 +127,10 @@ export default function ColumnsTable(props) {
                                                 </Text>
                                             </Flex>
                                         );
-                                    } else if (cell.column.Header === "NAME") {
-                                        data = (
-                                            <Text color={textColor} fontSize='sm' fontWeight='700'>
-                                                {cell.value}
-                                            </Text>
-                                        );
                                     } else if (cell.column.Header === "STATUS") {
                                         data = (
                                             <Text color={textColor} fontSize='sm' fontWeight='700'>
-                                                {cell.value === true ? "Active" : "Deactive"}
-                                            </Text>
-                                        );
-                                    } else if (cell.column.Header === "CREATED DATE") {
-                                        data = (
-                                            <Text color={textColor} fontSize='sm' fontWeight='700'>
-                                                {cell.value}
+                                                {cell.value === true ? "Active" : "In-Active"}
                                             </Text>
                                         );
                                     } else if (cell.column.Header === "Action") {
@@ -160,6 +147,12 @@ export default function ColumnsTable(props) {
                                                     onClick={() => { onDelete(row.original) }}
                                                 />
                                             </>
+                                        );
+                                    } else{
+                                        data = (
+                                            <Text color={textColor} fontSize='sm' fontWeight='700'>
+                                                {cell.value}
+                                            </Text>
                                         );
                                     }
                                     return (
@@ -179,7 +172,7 @@ export default function ColumnsTable(props) {
                 </Tbody>
             </Table>
             {isOpen && selectedRow && (
-                <IndustryModal action={'edit'} isOpen={isOpen} onClose={onClose} row={selectedRow} />
+                <ProjectModal action={'edit'} isOpen={isOpen} onClose={onClose} row={selectedRow} />
             )}
         </Card>
     );

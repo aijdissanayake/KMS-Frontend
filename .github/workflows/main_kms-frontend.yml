@@ -58,5 +58,5 @@ jobs:
         with:
           app-name: 'kms-frontend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C9A7E86C57B341F3B392E369A7C127F0 }}
+          publish-profile: ${{ secrets.AZURE_FRONTEND }}
           package: release.zip
