@@ -5,14 +5,14 @@ import {
     ModalCloseButton,
     ModalContent, ModalFooter,
     ModalHeader,
-    ModalOverlay, Select,
+    ModalOverlay,
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
 import './styles.css';
 
 export default function ProjectModal(props) {
 
-    const createProject = (payload) => {
+    const createProject = (payload, projectId) => {
         console.log('payload');
         console.log(payload);
         if (props.action === 'create') {
@@ -27,6 +27,7 @@ export default function ProjectModal(props) {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
+                    props.onClose();
                     return response.json();
                 })
                 .then((data) => {
@@ -36,10 +37,10 @@ export default function ProjectModal(props) {
                     console.log(err.message);
                 });
         } else {
-            const url = `https://kms-backend.azurewebsites.net/api/project?id=${payload.id}`;
+            const url = `https://kms-backend.azurewebsites.net/api/project/${projectId}`;
 
             fetch(url, {
-                method: 'PUT',
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -49,6 +50,7 @@ export default function ProjectModal(props) {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
+                    props.onClose();
                     return response.json();
                 })
                 .then((data) => {
@@ -74,55 +76,55 @@ export default function ProjectModal(props) {
                 }
                 <ModalCloseButton />
                 <ModalBody>
+                    {
                     <Formik
-                        initialValues={{ name: props.row? props.row.name : '', status: props.row? props.row.status : '' }}
+                        initialValues={props}
                         onSubmit={(values, actions) => {
                             setTimeout(() => {
-                                createProject(values)
+                                const body = {
+                                    Name: values.Name !== undefined ? values.Name : values.row.Name,
+                                    Description: values.Description !== undefined ? values.Description : values.row.Description,
+                                    ClientId: values.ClientId !== undefined ? values.ClientId : values.row.ClientId,
+                                    ProjectCategoryId: values.ProjectCategoryId !== undefined ? values.ProjectCategoryId : values.row.ProjectCategoryId
+                                }
+                                createProject(body, values.row.id)
                                 actions.setSubmitting(false)
                             }, 1000)
                         }}
                     >
                         {(props) => (
                             <Form style={{ paddingRight: 10, paddingLeft: 10 }}>
-                                <Field name='name'>
+                                <Field name='Name'>
                                     {({ field, form }) => (
+                                        field.value = field.value === undefined ? (props.values.row ? props.values.row.Name : '') : field.value,
                                         <FormControl isInvalid={form.errors.name && form.touched.name}>
                                             <FormLabel>Name</FormLabel>
                                             <Input {...field} placeholder='Project Name' />
                                         </FormControl>
                                     )}
                                 </Field>
-                                <Field name='description'>
+                                <Field name='Description'>
                                     {({ field, form }) => (
+                                        field.value = field.value === undefined ? (props.values.row ? props.values.row.Description : '') : field.value,
                                         <FormControl isInvalid={form.errors.description && form.touched.description}>
                                             <FormLabel>Description</FormLabel>
                                             <Input {...field} placeholder='Project Description' />
                                         </FormControl>
                                     )}
                                 </Field>
-                               
-                                <Field name='status'>
+                            
+                                <Field name='ClientId'>
                                     {({ field, form }) => (
-                                        <FormControl isInvalid={form.errors.status && form.touched.status}>
-                                            <FormLabel>Status</FormLabel>
-                                            <Select placeholder='Select status'>
-                                                <option>Active</option>
-                                                <option>In active</option>
-                                            </Select>
-                                        </FormControl>
-                                    )}
-                                </Field>
-                                <Field name='client'>
-                                    {({ field, form }) => (
+                                        field.value = field.value === undefined ? (props.values.row ? props.values.row.ClientId : '') : field.value,
                                         <FormControl isInvalid={form.errors.industry && form.touched.industry}>
                                             <FormLabel>Client</FormLabel>
                                             <Input {...field} placeholder='Project Industry' />
                                         </FormControl>
                                     )}
                                 </Field>
-                                <Field name='projectCategory'>
+                                <Field name='ProjectCategoryId'>
                                     {({ field, form }) => (
+                                        field.value = field.value === undefined ? (props.values.row ? props.values.row.ProjectCategoryId : '') : field.value,
                                         <FormControl isInvalid={form.errors.industry && form.touched.industry}>
                                             <FormLabel>Project Category</FormLabel>
                                             <Input {...field} placeholder='Project Industry' />
@@ -145,6 +147,7 @@ export default function ProjectModal(props) {
                             </Form>
                         )}
                     </Formik>
+}
                 </ModalBody>
                 <ModalFooter>
                 </ModalFooter>

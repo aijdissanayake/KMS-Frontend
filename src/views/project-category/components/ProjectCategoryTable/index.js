@@ -52,6 +52,29 @@ export default function ProjectCategoryTable(props) {
         setSelectedRow(row.original);
     };
 
+    const onDelete = (row) => {
+        const url = `https://kms-backend.azurewebsites.net/api/project-category/${row.id}`;
+
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
     const textColor = useColorModeValue("secondaryGray.900", "white");
     const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
     return (
@@ -117,7 +140,7 @@ export default function ProjectCategoryTable(props) {
                                     } else if (cell.column.Header === "STATUS") {
                                         data = (
                                             <Text color={textColor} fontSize='sm' fontWeight='700'>
-                                                {cell.value}
+                                                {cell.value === true ? "Active":"In-Active"}
                                             </Text>
                                         );
                                     } else if (cell.column.Header === "CREATED DATE") {
@@ -137,7 +160,7 @@ export default function ProjectCategoryTable(props) {
                                                 <IconButton
                                                     aria-label="Delete"
                                                     icon={<DeleteIcon />}
-                                                    onClick={() => console.log("Delete clicked for row", index)}
+                                                    onClick={() => { onDelete(row.original) }}
                                                 />
                                             </>
                                         );

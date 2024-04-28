@@ -5,19 +5,19 @@ export const projectCategoryColumnsData = [
   },
   {
     Header: "NAME",
-    accessor: "name",
+    accessor: "Name",
   },
   {
     Header: "DESCRIPTION",
-    accessor: "description",
+    accessor: "Description",
   },
   {
     Header: "STATUS",
-    accessor: "status",
+    accessor: "IsActive",
   },
   {
     Header: "CREATED DATE",
-    accessor: "createdDate",
+    accessor: "CreatedOn",
   },
   {
     Header: "Action",

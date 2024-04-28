@@ -12,11 +12,11 @@ import './styles.css';
 
 export default function ProjectCategoryModal(props) {
 
-    const submitProjectCategory = (payload) => {
+    const submitProjectCategory = (payload, projectCatId) => {
         console.log('payload');
         console.log(payload);
         if (props.action === 'create') {
-            fetch('https://kms-backend.azurewebsites.net/api/project-categories', {
+            fetch('https://kms-backend.azurewebsites.net/api/project-category', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -27,6 +27,7 @@ export default function ProjectCategoryModal(props) {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
+                    props.onClose();
                     return response.json();
                 })
                 .then((data) => {
@@ -36,10 +37,10 @@ export default function ProjectCategoryModal(props) {
                     console.log(err.message);
                 });
         } else {
-            const url = `https://kms-backend.azurewebsites.net/api/project-categories?id=${payload.id}`;
+            const url = `https://kms-backend.azurewebsites.net/api/project-category/${projectCatId}`;
 
             fetch(url, {
-                method: 'PUT',
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -49,6 +50,7 @@ export default function ProjectCategoryModal(props) {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
+                    props.onClose();
                     return response.json();
                 })
                 .then((data) => {
@@ -75,31 +77,34 @@ export default function ProjectCategoryModal(props) {
                 }
                 <ModalCloseButton />
                 <ModalBody>
+                    {
                     <Formik
-                        initialValues={{
-                            name: props.row? props.row.name : '',
-                            status: props.row? props.row.status : '',
-                            description: props.row? props.row.description : ''
-                        }}
+                        initialValues={props}
                         onSubmit={(values, actions) => {
                             setTimeout(() => {
-                                submitProjectCategory(values)
+                                const body = {
+                                    Name: values.Name !== undefined ? values.Name : values.row.Name,
+                                    Description: values.Description !== undefined ? values.Description : values.row.Description
+                                }
+                                submitProjectCategory(body, values.row.id)
                                 actions.setSubmitting(false)
                             }, 1000)
                         }}
                     >
                         {(props) => (
                             <Form style={{ paddingRight: 10, paddingLeft: 10 }}>
-                                <Field name='name'>
+                                <Field name='Name'>
                                     {({ field, form }) => (
+                                        field.value = field.value === undefined ? (props.values.row ? props.values.row.Name : '') : field.value,
                                         <FormControl isInvalid={form.errors.name && form.touched.name}>
                                             <FormLabel>Project Category Name</FormLabel>
                                             <Input {...field} placeholder='Project Category Name' />
                                         </FormControl>
                                     )}
                                 </Field>
-                                <Field name='description'>
+                                <Field name='Description'>
                                     {({ field, form }) => (
+                                        field.value = field.value === undefined ? (props.values.row ? props.values.row.Description : '') : field.value,
                                         <FormControl isInvalid={form.errors.name && form.touched.name}>
                                             <FormLabel>Description</FormLabel>
                                             <Textarea {...field} />
@@ -122,6 +127,7 @@ export default function ProjectCategoryModal(props) {
                             </Form>
                         )}
                     </Formik>
+}
                 </ModalBody>
                 <ModalFooter>
                 </ModalFooter>

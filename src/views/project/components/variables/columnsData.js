@@ -5,31 +5,31 @@ export const projectColumnsData = [
   },
   {
     Header: "NAME",
-    accessor: "name",
+    accessor: "Name",
   },
   {
     Header: "DESCRIPTION",
-    accessor: "description",
+    accessor: "Description",
   },
   {
     Header: "CLIENT",
-    accessor: "client",
+    accessor: "ClientId",
   },
   {
     Header: "PROJECT CATEGORY",
-    accessor: "projectCategory",
+    accessor: "ProjectCategoryId",
   },
   {
     Header: "STATUS",
-    accessor: "status",
+    accessor: "IsActive",
   },
   {
     Header: "CREATED DATE",
-    accessor: "createdDate",
+    accessor: "CreatedOn",
   },
   {
     Header: "LAST MODIFIED DATE",
-    accessor: "lastModifiedDate",
+    accessor: "ModifiedOn",
   },
   {
     Header: "Action",
