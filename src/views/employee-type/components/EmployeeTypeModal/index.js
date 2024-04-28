@@ -80,7 +80,8 @@ export default function EmployeeTypeModal(props) {
                                 const body = {
                                     Name: values.Name !== undefined ? values.Name : values.row.Name
                                 }
-                                createIndustry(body, values.row.id);
+                                const id = props.action === 'edit' ? values.row.id : null;
+                                createIndustry(body, id);
                                 actions.setSubmitting(false)
                             }, 1000)
                         }}
