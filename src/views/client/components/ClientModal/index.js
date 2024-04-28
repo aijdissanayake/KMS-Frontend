@@ -46,6 +46,7 @@ export default function ClientModal(props) {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
+                    props.onClose();
                     return response.json();
                 })
                 .then((data) => {
@@ -81,7 +82,8 @@ export default function ClientModal(props) {
                                         Description: values.Description !== undefined ? values.Description : values.row.Description,
                                         IndustryId: values.IndustryId !== undefined ? values.IndustryId : values.row.IndustryId
                                     }
-                                    createClient(body, values.row.id)
+                                    const id = props.action === 'edit' ? values.row.id : null;
+                                    createClient(body, id)
                                     actions.setSubmitting(false)
                                 }, 1000)
                             }}

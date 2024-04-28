@@ -85,7 +85,8 @@ export default function IndustryModal(props) {
                                     Name: values.Name !== undefined ? values.Name : values.row.Name,
                                 }
                                 console.log(values);
-                                createIndustry(body, values.row.id)
+                                const id = props.action === 'edit' ? values.row.id : null;
+                                createIndustry(body, id)
                                 actions.setSubmitting(false)
                             }, 1000)
                         }}
